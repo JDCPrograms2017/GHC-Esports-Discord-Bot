@@ -24,15 +24,11 @@ class AllCommands(commands.Cog):
 
         dm_message.set_footer(text='Produced by: GHC Esports Assistant')
         dm_message.set_thumbnail(url='https://pbs.twimg.com/profile_images/1248003912059088898/JG3hxY8r.jpg')
-        #dm_message.add_field(name='Deleting messages from this chat', value='To delete messages from this chat that **I\'VE** sent, type !dmclear [number of messages to delete]', inline=False)
         dm_message.add_field(name='Introduction', value='Where to start? While there are commands you can test out here like !ping, I advise you being your journey in the #general chat in our server! Reach out and say hi!', inline=False)
+        dm_message.add_field(name='About me (GHC Esports Assistant)', value='I am still very new and very in-dev, but you can check out my functionality by typing !list_commands in any text-channel on our server! :)', inline=False)
+        dm_message.add_field(name='NOTE', value='As far as the devs know... you cannot delete chat history with this bot, lol.', inline=False)
         await channel.send(embed=dm_message)
     
-    #NOT FUNCTIONAL  
-    #@commands.command()
-    #async def dmclear(self, ctx, amount = 5):
-    #    dmchannel = ctx.channel.id
-    #    async for message in 
 
     #These are the MAIN commands :)
     @commands.command()
@@ -65,7 +61,9 @@ class AllCommands(commands.Cog):
             embeded_schedule.add_field(name='Details', value=data[arg1][3], inline=True)
             await ctx.send(embed=embeded_schedule)
 
-    #ROLE SPECIFIC - CLEARS DESIRED AMOUNT OF SENT MESSAGES IN A CHANNEL
+    #ROLE SPECIFIC COMMANDS 
+    #----------------------
+    #CLEARS DESIRED AMOUNT OF SENT MESSAGES IN A CHANNEL
     @commands.command()
     async def clear(self, ctx, amount = 5):
         check_role = get(ctx.message.guild.roles, name='Bot Moderator')
@@ -74,6 +72,21 @@ class AllCommands(commands.Cog):
             await ctx.send("You are missing the role: **Bot Moderator** to perform this action.")
         else:
             await ctx.channel.purge(limit = amount + 1)
+
+    @commands.command()
+    async def kick(self, ctx, member: discord.Member = None, *, why = 'no specified reason, lol'):
+        check_role = get(ctx.message.guild.roles, name='Bot Moderator')
+        if check_role not in ctx.author.roles:
+            await ctx.channel.purge(limit=1)
+            await ctx.send("You are missing the role: **Bot Moderator** to perform this action.")
+        else: 
+            if member is None:
+                await ctx.channel.purge(limit=1)
+                await ctx.send('**Please specify user to kick**')
+            else:
+                await ctx.channel.purge(limit=1)
+                await ctx.guild.kick(member, reason = why)
+                await ctx.send(f'{member} has been kicked by {ctx.author} for **{why}**')
 
     #LISTS AVAILABLE COMMANDS
     @commands.command()
