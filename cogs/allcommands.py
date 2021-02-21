@@ -41,25 +41,32 @@ class AllCommands(commands.Cog):
 
     #DISPLAYS SCHEDULES FOR T.N.G BASED ON INCLUDED .CSV FILE
     @commands.command(aliases=['sched', 'skej'])
-    async def show_schedule(self, ctx, arg1):
+    async def show_schedule(self, ctx, arg1 = None):
         with open ("UNIFIED_titles_stats_schedule_-_Schedule.csv", newline='') as csvfile:
             rows = csv.reader(csvfile, delimiter=',')
             data = {}
             for row in rows:
                 data[row[0]] = row[1:]
+            
+            data_string = ''
+            for key in data:
+                data_string = data_string + (f'**{key}**, ')
+            
+            if arg1 is None:
+                await ctx.send(f'Invalid (or missing) argument! Please try one of these: {data_string}')
+            else:
+                embeded_schedule = discord.Embed(
+                    title = '*Thursday Night Gaming - All-ages community gaming night - everyone is welcome!*',
+                    description = f'**Schedule for {arg1}**',
+                    colour = discord.Colour.blue()
+                )
 
-            embeded_schedule = discord.Embed(
-                title = '*Thursday Night Gaming - All-ages community gaming night - everyone is welcome!*',
-                description = f'**Schedule for {arg1}**',
-                colour = discord.Colour.blue()
-            )
-
-            embeded_schedule.set_footer(text='Produced by: GHC Esports Assistant')
-            embeded_schedule.set_author(name='GHC Esports Bot')
-            embeded_schedule.set_thumbnail(url=data[arg1][4])
-            embeded_schedule.add_field(name='Date', value=f'{data[arg1][2]}, {data[arg1][0]} {data[arg1][1]} @ 6 P.M. PST', inline=True)
-            embeded_schedule.add_field(name='Details', value=data[arg1][3], inline=True)
-            await ctx.send(embed=embeded_schedule)
+                embeded_schedule.set_footer(text='Produced by: GHC Esports Assistant')
+                embeded_schedule.set_author(name='GHC Esports Bot')
+                embeded_schedule.set_thumbnail(url=data[arg1][4])
+                embeded_schedule.add_field(name='Date', value=f'{data[arg1][2]}, {data[arg1][0]} {data[arg1][1]} @ 6 P.M. PST', inline=True)
+                embeded_schedule.add_field(name='Details', value=data[arg1][3], inline=True)
+                await ctx.send(embed=embeded_schedule)
 
     #ROLE SPECIFIC COMMANDS 
     #----------------------
