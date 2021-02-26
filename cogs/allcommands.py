@@ -6,6 +6,17 @@ intents.members = True
 
 import csv
 
+with open ("UNIFIED_titles_stats_schedule_-_Schedule.csv", newline='') as csvfile:
+            rows = csv.reader(csvfile, delimiter=',')
+            data = {}
+            for row in rows:
+                data[row[0]] = row[1:]
+            
+            data_string = ''
+            for key in data:
+                data_string = data_string + (f'**{key}**, ')
+            
+
 class AllCommands(commands.Cog):
 
     def __init__(self, bot):
@@ -42,31 +53,21 @@ class AllCommands(commands.Cog):
     #DISPLAYS SCHEDULES FOR T.N.G BASED ON INCLUDED .CSV FILE
     @commands.command(aliases=['sched', 'skej'])
     async def show_schedule(self, ctx, arg1 = None):
-        with open ("UNIFIED_titles_stats_schedule_-_Schedule.csv", newline='') as csvfile:
-            rows = csv.reader(csvfile, delimiter=',')
-            data = {}
-            for row in rows:
-                data[row[0]] = row[1:]
-            
-            data_string = ''
-            for key in data:
-                data_string = data_string + (f'**{key}**, ')
-            
-            if arg1 is None:
-                await ctx.send(f'Invalid (or missing) argument! Please try one of these: {data_string}')
-            else:
-                embeded_schedule = discord.Embed(
-                    title = '*Thursday Night Gaming - All-ages community gaming night - everyone is welcome!*',
-                    description = f'**Schedule for {arg1}**',
-                    colour = discord.Colour.blue()
-                )
+        if arg1 is None:
+             await ctx.send(f'Missing argument! Please try one of these: {data_string}')
+        else:
+            embeded_schedule = discord.Embed(
+                 title = '*Thursday Night Gaming - All-ages community gaming night - everyone is welcome!*',
+                 description = f'**Schedule for {arg1}**',
+                 colour = discord.Colour.blue()
+            )
 
-                embeded_schedule.set_footer(text='Produced by: GHC Esports Assistant')
-                embeded_schedule.set_author(name='GHC Esports Bot')
-                embeded_schedule.set_thumbnail(url=data[arg1][4])
-                embeded_schedule.add_field(name='Date', value=f'{data[arg1][2]}, {data[arg1][0]} {data[arg1][1]} @ 6 P.M. PST', inline=True)
-                embeded_schedule.add_field(name='Details', value=data[arg1][3], inline=True)
-                await ctx.send(embed=embeded_schedule)
+            embeded_schedule.set_footer(text='Produced by: GHC Esports Assistant')
+            embeded_schedule.set_author(name='GHC Esports Bot')
+            embeded_schedule.set_thumbnail(url=data[arg1][4])
+            embeded_schedule.add_field(name='Date', value=f'{data[arg1][2]}, {data[arg1][0]} {data[arg1][1]} @ 6 P.M. PST', inline=True)
+            embeded_schedule.add_field(name='Details', value=data[arg1][3], inline=True)
+            await ctx.send(embed=embeded_schedule)
 
     #ROLE SPECIFIC COMMANDS 
     #----------------------
@@ -93,7 +94,22 @@ class AllCommands(commands.Cog):
             else:
                 await ctx.channel.purge(limit=1)
                 await ctx.guild.kick(member, reason = why)
-                await ctx.send(f'{member} has been kicked by {ctx.author} for **{why}**')
+                await ctx.send(f'{member} has been kicked by {ctx.author.display_name} for **{why}**')
+
+    #WORK IN PROGRESS - Adds and deletes events from Thursday Night Gaming schedule (and will export changes to .csv file and change the old one)
+    """@commands.command(aliases=['tng_a', 'tnga'])
+    async def tng_add(self, ctx, event_name, month, date, weekday, details, event_image_link = None):
+        check_role = get(ctx.message.guild.roles, name='Bot Moderator')
+        if check_role not in ctx.author.roles:
+          await ctx.channel.purge(limit=1)
+          await ctx.send("You are missing the role: **Bot Moderator** to perform this action.")  
+        else:
+            new_event_string = (f'{month},{date},{weekday},{details},{event_image_link}')
+            data[event_name] = new_event_string
+
+    @commands.command()
+    async def tng_delete(self, ctx, event_name):
+    """
 
     #LISTS AVAILABLE COMMANDS
     @commands.command()
@@ -115,6 +131,7 @@ class AllCommands(commands.Cog):
 
 
         await ctx.send(embed=help_embed)
+
 
 
 
