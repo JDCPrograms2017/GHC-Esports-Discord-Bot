@@ -35,7 +35,7 @@ class AllCommands(commands.Cog):
 
         dm_message.set_footer(text='Produced by: GHC Esports Assistant')
         dm_message.set_thumbnail(url='https://pbs.twimg.com/profile_images/1248003912059088898/JG3hxY8r.jpg')
-        dm_message.add_field(name='Introduction', value='Where to start? While there are commands you can test out here like !ping, I advise you being your journey in the #general chat in our server! Reach out and say hi!', inline=False)
+        dm_message.add_field(name='Introduction', value='Where to start? While there are commands you can test out here like !ping, I advise you begin your journey in the #general chat in our server! Reach out and say hi!', inline=False)
         dm_message.add_field(name='About me (GHC Esports Assistant)', value='I am still very new and very in-dev, but you can check out my functionality by typing !list_commands in any text-channel on our server! :)', inline=False)
         dm_message.add_field(name='NOTE', value='As far as the devs know... you cannot delete chat history with this bot, lol.', inline=False)
         await channel.send(embed=dm_message)
