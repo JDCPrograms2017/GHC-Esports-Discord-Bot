@@ -44,7 +44,7 @@ class AllCommands(commands.Cog):
     async def show_schedule(self, ctx, *, arg1 = None):
         db = sqlite3.connect('TNG_Events.db')
         cursor = db.cursor()
-        cursor.execute("SELECT EVENT_NAME FROM TNG_Events")
+        cursor.execute("SELECT EVENT_NAME FROM TNG_Events ORDER BY MONTHNUMB, DAY ASC")
         events = ""
         events_arr = []
         for event in cursor.fetchall():
@@ -64,19 +64,19 @@ class AllCommands(commands.Cog):
             #AUTHOR
             embeded_schedule.set_author(name='GHC Esports Bot')
             #THUMBNAIL
-            cursor.execute(f"SELECT THUMBNAIL_LINK FROM TNG_Events WHERE EVENT_NAME = '{arg1}'")
+            cursor.execute(f"SELECT THUMBNAIL_LINK FROM TNG_Events WHERE EVENT_NAME = '{arg1}' ORDER BY MONTHNUMB, DAY ASC")
             thumbnail = ("%s" % (cursor.fetchone()))
             embeded_schedule.set_thumbnail(url=thumbnail)
             #DATE
-            cursor.execute(f"SELECT WEEKDAY FROM TNG_Events WHERE EVENT_NAME = '{arg1}'")
+            cursor.execute(f"SELECT WEEKDAY FROM TNG_Events WHERE EVENT_NAME = '{arg1}' ORDER BY MONTHNUMB, DAY ASC")
             weekday = ("%s" % (cursor.fetchone()))
-            cursor.execute(f"SELECT MONTH FROM TNG_Events WHERE EVENT_NAME = '{arg1}'")
+            cursor.execute(f"SELECT MONTH FROM TNG_Events WHERE EVENT_NAME = '{arg1}' ORDER BY MONTHNUMB, DAY ASC")
             month = ("%s" % (cursor.fetchone()))
-            cursor.execute(f"SELECT DAY FROM TNG_Events WHERE EVENT_NAME = '{arg1}'")
+            cursor.execute(f"SELECT DAY FROM TNG_Events WHERE EVENT_NAME = '{arg1}' ORDER BY MONTHNUMB, DAY ASC")
             day = ("%d" % (cursor.fetchone()))
             embeded_schedule.add_field(name='Date', value=f'{weekday}, {month} {day} @ 6 P.M. PST', inline=True)
             #COMMENTS/DETAILS
-            cursor.execute(f"SELECT COMMENTS FROM TNG_Events WHERE EVENT_NAME = '{arg1}'")
+            cursor.execute(f"SELECT COMMENTS FROM TNG_Events WHERE EVENT_NAME = '{arg1}' ORDER BY MONTHNUMB, DAY ASC")
             comments = ("%s" % (cursor.fetchone()))
             embeded_schedule.add_field(name='Details', value=comments, inline=True)
             #SEND SCHEDULE
