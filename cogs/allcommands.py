@@ -40,8 +40,11 @@ class AllCommands(commands.Cog):
         await ctx.send(f'Hello {ctx.author.display_name}! Good to see you')
 
     @commands.command()
-    async def vouch(self, ctx, vouchee):
-        await ctx.send(f'Yea, sure. I vouch for {vouchee}')
+    async def vouch(self, ctx, *, vouchee = None):
+        if vouchee is None:
+            await ctx.send(f'Yooo {ctx.author.display_name}, vouch for someone bruv!')
+        else:
+            await ctx.send(f'Yea, sure. I vouch for {vouchee}')
 
     #DISPLAYS SCHEDULES FOR T.N.G BASED ON INCLUDED .CSV FILE BUT CURRENTLY TRANSITIONING TO SQLITE
     @commands.command(aliases=['sched', 'skej'])
