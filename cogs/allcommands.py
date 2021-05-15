@@ -39,6 +39,10 @@ class AllCommands(commands.Cog):
     async def hello(self, ctx):
         await ctx.send(f'Hello {ctx.author.display_name}! Good to see you')
 
+    @commands.command()
+    async def vouch(self, ctx, vouchee):
+        await ctx.send(f'Yea, sure. I vouch for {vouchee}')
+
     #DISPLAYS SCHEDULES FOR T.N.G BASED ON INCLUDED .CSV FILE BUT CURRENTLY TRANSITIONING TO SQLITE
     @commands.command(aliases=['sched', 'skej'])
     async def show_schedule(self, ctx, *, arg1 = None):
